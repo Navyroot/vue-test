@@ -1,0 +1,89 @@
+<html>
+
+<head>
+    <title>Vue Testing</title>
+    <script src="vue.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h2>Data Render</h2>
+        {{message.split('').reverse().join('')}} <span v-once>{{name}}</span>!
+
+        <h2>Event</h2>
+        <button v-on:click="handleChange">Change Name</button>
+
+        <h2>Data Binding</h2>
+        <span v-bind:title="title">Hello Data Binding</span>
+
+        <h2>If</h2>
+        <span v-if="seen">Now you see me</span>
+        <button v-on:click="handleHideShow">Hide/Show</button>
+
+        <h2>For Each</h2>
+        <ul>
+            <li v-for="student in students">
+                Name: {{student.name}} Gender: {{student.gender}}
+            </li>
+        </ul>
+
+        <h2>V Model</h2>
+        <input v-model="modelVal"> {{modelVal}}
+        <button v-on:click="handleModelChange">Change Model</button>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello',
+                name: 'Rabbit',
+                title: 'Data Binding Title',
+                seen: true,
+                students: [
+                    { name: 'Chea', gender: 'M' },
+                    { name: 'Nith', gender: 'M' },
+                    { name: 'Navy', gender: 'M' }
+                ],
+                modelVal: 'My Model'
+            },
+            beforeCreate() {
+                console.log('before create');
+            },
+            created() {
+                console.log('created');
+            },
+            beforeMount() {
+                console.log('beforeMount');
+            },
+            mounted() {
+                console.log('mounted');
+            },
+            beforeUpdate() {
+                console.log('beforeUpdate');
+            },
+            updated() {
+                console.log('updated');
+            },
+            beforeDestroy() {
+
+            },
+            destroyed() {
+
+            },
+            methods: {
+                handleChange() {
+                    this.name = 'Battambang';
+                },
+                handleHideShow() {
+                    this.seen = !this.seen;
+                },
+                handleModelChange() {
+                    this.modelVal = 'Model is changed'
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
