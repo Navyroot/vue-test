@@ -8,33 +8,42 @@
 <body>
     <div id="app">
         <h2>Data Render</h2>
-        {{message.split('').reverse().join('')}} <span v-once>{{name}}</span>!
+        {{message}} {{name}}!
 
         <h2>Event</h2>
         <button v-on:click="handleChange">Change Name</button>
 
         <h2>Data Binding</h2>
-        <span v-bind:title="title">Hello Data Binding</span>
+        <div title="title">No Data Binding</div>
+        <div v-bind:title="title">Data Binding</div>
 
         <h2>If</h2>
-        <span v-if="seen">Now you see me</span>
+        <div v-if="seen">Now you see me</div>
         <button v-on:click="handleHideShow">Hide/Show</button>
 
         <h2>For Each</h2>
         <ul>
-            <li v-for="student in students">
-                Name: {{student.name}} Gender: {{student.gender}}
+            <li v-for="(student, index) in students" :key="index">
+                Name: {{student.name}} Gender: {{student.gender}} <button @click="handleRemove(index)"> - </button>
             </li>
         </ul>
+        <button @click="handleAddMore"> + </button>
 
         <h2>V Model</h2>
-        <input v-model="modelVal"> {{modelVal}}
+        <input v-model="modelVal" @keyup.enter="alert('Keyup Enter')"> {{modelVal}}
         <button v-on:click="handleModelChange">Change Model</button>
+
+        <h2>Compute</h2>
+        {{reverseName}}
+
+        <h2>Watch</h2>
+        {{watcherVal}}
     </div>
 
     <script>
         var app = new Vue({
             el: '#app',
+            // Data/Helper
             data: {
                 message: 'Hello',
                 name: 'Rabbit',
@@ -45,32 +54,22 @@
                     { name: 'Nith', gender: 'M' },
                     { name: 'Navy', gender: 'M' }
                 ],
-                modelVal: 'My Model'
+                modelVal: 'My Model',
+                watcherVal: 'My Watcher',
             },
-            beforeCreate() {
-                console.log('before create');
+            // Compute
+            computed: {
+                reverseName() {
+                    return this.name.split('').reverse().join('');
+                }
             },
-            created() {
-                console.log('created');
+            // Watch
+            watch: {
+                modelVal(val, oldVal) {
+                    this.watcherVal = this.watcherVal + ' : ' + val;
+                },
             },
-            beforeMount() {
-                console.log('beforeMount');
-            },
-            mounted() {
-                console.log('mounted');
-            },
-            beforeUpdate() {
-                console.log('beforeUpdate');
-            },
-            updated() {
-                console.log('updated');
-            },
-            beforeDestroy() {
-
-            },
-            destroyed() {
-
-            },
+            // Method/Event
             methods: {
                 handleChange() {
                     this.name = 'Battambang';
@@ -80,8 +79,39 @@
                 },
                 handleModelChange() {
                     this.modelVal = 'Model is changed'
+                },
+                handleAddMore() {
+                    this.students.push({ name: 'A', gender: 'M' });
+                },
+                handleRemove(index) {
+                    this.students.splice(index, 1);
                 }
             }
+            // Lifecycle
+            // beforeCreate() {
+            //     console.log('before create');
+            // },
+            // created() {
+            //     console.log('created');
+            // },
+            // beforeMount() {
+            //     console.log('beforeMount');
+            // },
+            // mounted() {
+            //     console.log('mounted');
+            // },
+            // beforeUpdate() {
+            //     console.log('beforeUpdate');
+            // },
+            // updated() {
+            //     console.log('updated');
+            // },
+            // beforeDestroy() {
+
+            // },
+            // destroyed() {
+
+            // },
         })
     </script>
 </body>
